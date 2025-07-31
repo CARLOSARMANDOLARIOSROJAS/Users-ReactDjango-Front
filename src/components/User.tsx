@@ -1,11 +1,14 @@
-import { useFetchUsers } from "../hooks/useFetchUsers";
 import { UserCard } from "./UserCard";
+import type { User as UserType } from "../interfaces";
 
+interface UserProps {
+    users: UserType[];
+    handleDelete: (id: number) => Promise<void>;
+}
 
-export const User = () => {
+export const User = (Props: UserProps) => {
 
-    const { users, handleDelete} = useFetchUsers();
-
+    const { users, handleDelete } = Props;
     return (
         <ul className="grid grid-cols-4 gap-5 p-4 ">
             {users.map(u => (

@@ -11,16 +11,18 @@ export const useFetchUsers = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
+    const [search, setSearch] = useState("");
 
 
 
-    useEffect(() => {
-        const getUsers = async () => {
-            const response = await axios.get('http://localhost:8000/api/users/');
-            setUsers(response.data);
-        }
-        getUsers();
-    }, []);
+
+    const getUsers = async (search: string = ""): Promise<User[]> => {
+        const url = search ? `http://localhost:8000/api/users/?search=${search}` : 'http://localhost:8000/api/users/';
+        const response = await axios.get(url);
+        return response.data;
+    }
+
+
 
     const handleSubmit = async (values: Omit<User, 'id'>) => {
 
@@ -97,9 +99,39 @@ export const useFetchUsers = () => {
         }
     }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const allUsers = await getUsers();
+            setUsers(allUsers);
+        }
+        fetchData();
+    }, []);
 
+    const handleSearch = async () => {
+        const filtrados = await getUsers(search);
+        setUsers(filtrados);
+    }
+
+    useEffect(() => {
+        if (search.trim() === "") {
+            const loadAll = async () => {
+                const allUsers = await getUsers();
+                setUsers(allUsers);
+            }
+            loadAll();
+        }
+    }, [search]);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch();
+        }
+    }
 
     return {
+        getUsers,
+        handleSearch,
         users,
         handleDelete,
         handleSubmit,
@@ -108,6 +140,9 @@ export const useFetchUsers = () => {
         handleEdit,
         setSuccess,
         setError,
-        id
+        id,
+        setSearch,
+        search,
+        handleKeyDown
     }
 }
