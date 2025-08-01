@@ -1,6 +1,7 @@
 import { FaUser } from "react-icons/fa6";
 import type { User } from "../interfaces";
 import { Link } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 
 interface Props {
@@ -11,6 +12,10 @@ interface Props {
 export const UserCard = (props: Props) => {
 
     const { user, handleDelete } = props;
+
+    const { usuario } = useLogin();
+
+    const idUser = usuario?.id;
 
     return (
         <div className="flex justify-center items-center">
@@ -27,14 +32,18 @@ export const UserCard = (props: Props) => {
                         <span className="font-semibold text-white">Age:</span> {user.age}
                     </p>
                     <div className="flex gap-2">
-                        <Link to={`/edit/${user.id}`} className="bg-blue-500 border-radius cursor-pointer rounded px-2 py-1 text-white
+                        {idUser && (
+                            <Link to={`/edit/${user.id}`} className="bg-blue-500 border-radius cursor-pointer rounded px-2 py-1 text-white
                      hover:bg-blue-600 transition-colors">
-                            Edit
-                        </Link >
-                        <button onClick={() => handleDelete?.(user.id)} className="bg-red-500 border-radius cursor-pointer rounded px-2 py-1 text-white
+                                Edit
+                            </Link >
+                        )}
+                        {idUser && (
+                            <button onClick={() => handleDelete?.(user.id)} className="bg-red-500 border-radius cursor-pointer rounded px-2 py-1 text-white
                      hover:bg-red-700 transition-colors">
-                            Delete
-                        </button >
+                                Delete
+                            </button >
+                        )}
                     </div>
                 </div>
 
