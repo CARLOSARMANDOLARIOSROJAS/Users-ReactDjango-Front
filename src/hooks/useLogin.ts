@@ -40,7 +40,7 @@ export const useLogin = () => {
 
             if (response.status === 200 || response.status === 201) {
                 // Handle successful login, e.g., store token, redirect user, etc.
-                const accessToken = response.data.access;
+                const accessToken = response.data.access_token;
 
 
                 localStorage.setItem('token', accessToken);
