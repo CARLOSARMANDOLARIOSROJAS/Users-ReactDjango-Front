@@ -19,25 +19,31 @@ export const useFetchUsers = () => {
     const getUsers = async (search: string = ""): Promise<User[]> => {
         const url = search ? `http://localhost:8000/api/users/?search=${search}` : 'http://localhost:8000/api/users/';
         const response = await axios.get(url);
+        setUsers(response.data); // Actualizar el estado también
         return response.data;
     }
 
 
 
     const handleSubmit = async (values: Omit<User, 'id'>) => {
-
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
         // Handle form submission logic here
         console.log("Form submitted", values);
         // You can add your API call here to create a new user
         try {
-            const response = await axios.post('http://localhost:8000/api/users/', values);
+            const response = await axios.post('http://localhost:8000/api/users/', values, config);
             console.log('User created successfully', response.data);
 
             if (response.status === 200 || response.status === 201) {
                 setSuccess("User created successfully!  ");
+
                 setTimeout(() => {
-                    navigate("/");
-                }, 2000);
+                    navigate("/", { state: { updated: true } });
+                }, 1000);
             }
 
 
@@ -49,7 +55,14 @@ export const useFetchUsers = () => {
         }
     };
 
+
+
     const handleEdit = async (values: Omit<User, 'id'>) => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
         if (!id) {
             setError("User ID is required for editing.");
             return;
@@ -58,14 +71,14 @@ export const useFetchUsers = () => {
         console.log("Form submitted", values);
         // You can add your API call here to create a new user
         try {
-            const response = await axios.put(`http://localhost:8000/api/users/${id}/`, values);
+            const response = await axios.put(`http://localhost:8000/api/users/${id}/`, values, config);
             console.log('User updated successfully', response.data);
 
             if (response.status === 200 || response.status === 201) {
                 setSuccess("User updated successfully!  ");
                 setTimeout(() => {
-                    navigate("/");
-                }, 2000);
+                    navigate("/", { state: { updated: true } });
+                }, 1000);
             }
 
 
@@ -78,6 +91,11 @@ export const useFetchUsers = () => {
     }
 
     const handleDelete = async (id: number) => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
         try {
 
             const result = await Swal.fire({
@@ -91,7 +109,7 @@ export const useFetchUsers = () => {
             })
 
             if (result.isConfirmed) {
-                await axios.delete(`http://localhost:8000/api/users/${id}/`);
+                await axios.delete(`http://localhost:8000/api/users/${id}/`, config);
                 setUsers(users.filter(user => user.id !== id));
             }
         } catch (error) {

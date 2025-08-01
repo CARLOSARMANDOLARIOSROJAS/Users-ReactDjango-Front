@@ -5,7 +5,7 @@ import { useFetchUsers } from "../hooks/useFetchUsers";
 
 export const FormUser = () => {
 
-    const {handleSubmit, success, error } = useFetchUsers();
+    const { handleSubmit, success, error } = useFetchUsers();
 
     const initialValues: Omit<User, 'id'> = {
         username: '',
@@ -29,7 +29,8 @@ export const FormUser = () => {
                                 type="text"
                                 name="username"
                                 id="username"
-                            />                        </div>
+                            />
+                        </div>
                         <div className="mb-4">
                             <label className="block text-white mb-2" htmlFor="email">Email</label>
                             <Field
