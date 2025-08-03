@@ -2,6 +2,8 @@ import { FaUser } from "react-icons/fa6";
 import type { User } from "../interfaces";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import { adminActions } from "../helpers/texts";
+import { Button } from "./Button";
 
 
 interface Props {
@@ -35,14 +37,17 @@ export const UserCard = (props: Props) => {
                         {idUser && (
                             <Link to={`/edit/${user.id}`} className="bg-blue-500 border-radius cursor-pointer rounded px-2 py-1 text-white
                      hover:bg-blue-600 transition-colors">
-                                Edit
+                                {adminActions.editUser}
                             </Link >
                         )}
                         {idUser && (
-                            <button onClick={() => handleDelete?.(user.id)} className="bg-red-500 border-radius cursor-pointer rounded px-2 py-1 text-white
-                     hover:bg-red-700 transition-colors">
-                                Delete
-                            </button >
+                            <Button
+                                label={adminActions.deleteUser}
+                                onClick={() => handleDelete?.(user.id)}
+                                class="bg-red-500 border-radius cursor-pointer rounded px-2 py-1 text-white
+                                            hover:bg-red-700 transition-colors"
+                            >
+                            </Button>
                         )}
                     </div>
                 </div>

@@ -44,7 +44,7 @@ export const EditUser = () => {
 
 
     return (
-        <div className="flex items-center justify-center h-190 bg-gray-900">
+        <div className="flex items-center justify-center h-150 bg-gray-900">
             <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-white text-xl font-bold mb-4 text-center">Edit User</h2>
                 {loading ? (

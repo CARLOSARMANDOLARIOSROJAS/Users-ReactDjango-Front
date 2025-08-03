@@ -36,7 +36,6 @@ export const Login = () => {
                         <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Login</button>
                     </Form>
                 </Formik>
-                {success && <p className="text-green-500 mt-4">{success}</p>}
                 {error && <p className="text-red-500 mt-4">{error}</p>}
             </div>
         </div>

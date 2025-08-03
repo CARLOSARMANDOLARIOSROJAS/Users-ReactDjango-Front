@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserName } from "../actions/loginActions";
 import type { RootState } from "../app/store";
+import Swal from "sweetalert2";
 
 export const useLogin = () => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
-    
+
     // Acceder al slice de auth, no al de users
     const authUser = useSelector((state: RootState) => state.auth.user);
 
@@ -36,7 +37,6 @@ export const useLogin = () => {
 
         try {
             const response = await axios.post('http://localhost:8000/api/users/login/', values);
-            console.log('Login successful', response.data);
 
             if (response.status === 200 || response.status === 201) {
                 // Handle successful login, e.g., store token, redirect user, etc.
@@ -52,12 +52,15 @@ export const useLogin = () => {
                 dispatch(setUserName(user));
                 localStorage.setItem('user', JSON.stringify(user));
 
-                console.log(user.username, user.email, user.id);
-
-                setSuccess("Login successful!");
                 setTimeout(() => {
-                    navigate("/");
-                }, 2000);
+                    const result =  Swal.fire({
+                        title: 'Welcome!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 900
+                    });
+                    navigate("/users");
+                }, 900);
             }
 
         } catch (error) {
